@@ -1,0 +1,16 @@
+{
+  "name": "node-red-contrib-context-hook",
+  "version": "1.0.0",
+  "description": "A node for managing state in Node-RED",
+  "main": "../context-hook/lower-case.js",
+  "node-red" : {
+    "nodes": {
+      "lower-case": "lower-case.js"
+    }
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Siiri Mangus",
+  "license": "ISC"
+}
