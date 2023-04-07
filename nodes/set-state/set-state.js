@@ -1,4 +1,5 @@
 const { isEqual } = require('lodash');
+const { getEmitter } = require('../../events/emitter');
 
 module.exports = function(RED) {
     function SetState(config) {
@@ -30,6 +31,11 @@ module.exports = function(RED) {
                 }
 
                 global.set(property, value);
+
+                getEmitter().emit(property, {
+                    previousValue,
+                    value,
+                });
             } catch (e) {
                 console.error(e);
                 node.status({ fill: 'red', shape: 'ring', text: 'error' });
