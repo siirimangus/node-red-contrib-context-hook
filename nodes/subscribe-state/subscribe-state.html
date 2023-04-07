@@ -1,0 +1,39 @@
+<script type="text/javascript">
+    RED.nodes.registerType('subscribe-state', {
+        category: 'state',
+        color: '#c0deed',
+        defaults: {
+            name: { value: 'subscribe state' },
+            property: { value: '' },
+        },
+        inputs: 0,
+        outputs: 1,
+        icon: 'font-awesome/fa-bell',
+        label: function() {
+            if (this.name) {
+                return this.name;
+            }
+
+            if (this.property) {
+                return `${this.property}`;
+            }
+
+            return 'subscribe state';
+        },
+    });
+</script>
+
+<script type="text/html" data-template-name="subscribe-state">
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+    <div class="form-row">
+        <label for="node-input-property"><i class="fa fa-tag"></i> State property</label>
+        <input type="text" id="node-input-property" placeholder="property">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="subscribe-state">
+    <p>A node that subscribes to the state updates</p>
+</script>

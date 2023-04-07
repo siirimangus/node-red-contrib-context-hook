@@ -5,7 +5,8 @@
   "main": "set-state.js",
   "node-red": {
     "nodes": {
-      "set-state": "nodes/set-state/set-state.js"
+      "set-state": "nodes/set-state/set-state.js",
+      "subscribe-state": "nodes/subscribe-state/subscribe-state.js"
     }
   },
   "scripts": {
