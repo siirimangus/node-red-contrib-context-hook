@@ -6,7 +6,8 @@
   "node-red": {
     "nodes": {
       "set-state": "nodes/set-state/set-state.js",
-      "subscribe-state": "nodes/subscribe-state/subscribe-state.js"
+      "subscribe-state": "nodes/subscribe-state/subscribe-state.js",
+      "state-hook": "nodes/state-hook/state-hook.js"
     }
   },
   "scripts": {
@@ -15,6 +16,7 @@
   "author": "Siiri Mangus",
   "license": "ISC",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "strip-comments": "^2.0.1"
   }
 }

@@ -9,7 +9,7 @@ module.exports = function(RED) {
         let { property } = config;
         const global = node.context().global;
 
-        node.on('input', function(msg) {
+        node.on('input', function(msg, send, done) {
             if (msg.property) {
                 property = msg.property;
             }
@@ -36,8 +36,21 @@ module.exports = function(RED) {
                     previousValue,
                     value,
                 });
-            } catch (e) {
-                console.error(e);
+
+                // This call is wrapped in a check that 'done' exists
+                // so the node will work in earlier versions of Node-RED (<1.0)
+                if (done) {
+                    done();
+                }
+            } catch (error) {
+                if (done) {
+                    // Node-RED 1.0 compatible
+                    done(error);
+                } else {
+                    // Node-RED 0.x compatible
+                    node.error(error, msg);
+                }
+                console.error(error);
                 node.status({ fill: 'red', shape: 'ring', text: 'error' });
             }
         });
