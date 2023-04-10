@@ -11,12 +11,17 @@
     }
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest \".*.test.js\""
   },
   "author": "Siiri Mangus",
   "license": "ISC",
   "dependencies": {
     "lodash": "^4.17.21",
     "strip-comments": "^2.0.1"
+  },
+  "devDependencies": {
+    "jest": "^29.5.0",
+    "node-red": "^3.0.2",
+    "node-red-node-test-helper": "^0.3.0"
   }
 }
