@@ -1,0 +1,42 @@
+[
+  {
+    "id": "e13dae948cb2840c",
+    "type": "inject",
+    "z": "f5b0c7eb588ff79f",
+    "name": "kitchen temperature",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"temperature\":23}",
+    "payloadType": "json",
+    "x": 270,
+    "y": 120,
+    "wires": [
+      [
+        "0ccc5a6cc0ae6b3a"
+      ]
+    ]
+  },
+  {
+    "id": "0ccc5a6cc0ae6b3a",
+    "type": "set-state",
+    "z": "f5b0c7eb588ff79f",
+    "name": "set state",
+    "property": "kitchen.temperature",
+    "func": "return msg.payload.temperature;",
+    "x": 480,
+    "y": 120,
+    "wires": []
+  }
+]

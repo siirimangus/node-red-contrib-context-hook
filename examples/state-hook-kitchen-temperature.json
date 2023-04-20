@@ -1,0 +1,105 @@
+[
+  {
+    "id": "e13dae948cb2840c",
+    "type": "inject",
+    "z": "f5b0c7eb588ff79f",
+    "name": "kitchen temperature",
+    "props": [
+      {
+        "p": "payload"
+      },
+      {
+        "p": "topic",
+        "vt": "str"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "{\"temperature\":23}",
+    "payloadType": "json",
+    "x": 270,
+    "y": 120,
+    "wires": [
+      [
+        "0ccc5a6cc0ae6b3a"
+      ]
+    ]
+  },
+  {
+    "id": "bc90c9378111efd2",
+    "type": "debug",
+    "z": "f5b0c7eb588ff79f",
+    "name": "debug kitchen temperature",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "true",
+    "targetType": "full",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 540,
+    "y": 180,
+    "wires": []
+  },
+  {
+    "id": "3b88f21f0411eb8d",
+    "type": "subscribe-state",
+    "z": "f5b0c7eb588ff79f",
+    "name": "subscribe kitchen temp",
+    "property": "kitchen.temperature",
+    "x": 260,
+    "y": 180,
+    "wires": [
+      [
+        "bc90c9378111efd2"
+      ]
+    ]
+  },
+  {
+    "id": "88dbd4af31b7df85",
+    "type": "state-hook",
+    "z": "f5b0c7eb588ff79f",
+    "name": "state hook",
+    "func": "const temp = useGlobal('kitchen.temperature');\n\nif (temp < 20) {\n    return {\n        payload: {'temp-change': 'yes'}\n    };\n} else {\n    return {\n        payload: { 'temp-change': 'no' }\n    };\n}\n",
+    "outputs": 1,
+    "x": 300,
+    "y": 240,
+    "wires": [
+      [
+        "5d8acb88be66a634"
+      ]
+    ]
+  },
+  {
+    "id": "5d8acb88be66a634",
+    "type": "debug",
+    "z": "f5b0c7eb588ff79f",
+    "name": "debug 3",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "statusVal": "",
+    "statusType": "auto",
+    "x": 480,
+    "y": 240,
+    "wires": []
+  },
+  {
+    "id": "0ccc5a6cc0ae6b3a",
+    "type": "set-state",
+    "z": "f5b0c7eb588ff79f",
+    "name": "set state",
+    "property": "kitchen.temperature",
+    "func": "return msg.payload.temperature;",
+    "x": 480,
+    "y": 120,
+    "wires": []
+  }
+]
