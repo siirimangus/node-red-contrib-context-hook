@@ -14,7 +14,7 @@
     "test": "jest \".*.test.js\""
   },
   "author": "Siiri Mangus, Mikk Mangus",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "lodash": "^4.17.21",
     "strip-comments": "^2.0.1"
