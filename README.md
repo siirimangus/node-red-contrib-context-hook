@@ -26,8 +26,8 @@ npm i node-red-contrib-context-hook
 
 The extension provides three nodes under the category "state".
 
-<a href="https://drive.google.com/uc?export=view&id=1hErIA_NaP0U0tf1NDE2GZp5TeNyf7AAg">
-    <img alt="nodes in extension" src="https://drive.google.com/uc?export=view&id=1hErIA_NaP0U0tf1NDE2GZp5TeNyf7AAg" height="200" >
+<a href="https://drive.google.com/uc?export=view&id=1wPKEwpYvobg2yH1u9egZ-Ie3PJAUxaBY">
+    <img alt="nodes in extension" src="https://drive.google.com/uc?export=view&id=1wPKEwpYvobg2yH1u9egZ-Ie3PJAUxaBY" height="200" >
 </a>
 
 In order to use the `subscribe-state` and the `state-hook` nodes, the `set-global-state` node must be used beforehand.
@@ -42,12 +42,12 @@ As an example, there is a simple flow to set kitchen temperature. The function i
 the temperature value from the message payload and sets it to the global context with the property name `kitchen.temperature`.
 If the function returns `undefined`, the value is not updated and no event is emitted.
 
-<a href="https://drive.google.com/uc?export=view&id=1kiTcwM8m7Ets8sufPSw-71LDhtOIiig1">
-    <img alt="set-global-state node flow" src="https://drive.google.com/uc?export=view&id=1kiTcwM8m7Ets8sufPSw-71LDhtOIiig1" height="70" >
+<a href="https://drive.google.com/uc?export=view&id=1aEbxFollc9YXBJvh3e9qZAWc7kEY4Ea6">
+    <img alt="set-global-state node flow" src="https://drive.google.com/uc?export=view&id=1aEbxFollc9YXBJvh3e9qZAWc7kEY4Ea6" height="70" >
 </a>
 <br/>
-<a href="https://drive.google.com/uc?export=view&id=1W7FuzneEtijmuiVfi1aZ3X481BVTKcKw">
-    <img alt="set-global-state node editing" src="https://drive.google.com/uc?export=view&id=1W7FuzneEtijmuiVfi1aZ3X481BVTKcKw" height="270" >
+<a href="https://drive.google.com/uc?export=view&id=1VnZusn-Yfl0AyRvnTRIDgmQHWu3x8KBx">
+    <img alt="set-global-state node editing" src="https://drive.google.com/uc?export=view&id=1VnZusn-Yfl0AyRvnTRIDgmQHWu3x8KBx" height="270" >
 </a>
 
 And then the value can be seen in the global context.
@@ -131,6 +131,6 @@ the lamp state is run again.
 Most probably the illuminance might be affected by the light being turned on, therefore updating the state of the illuminance
 should take that into account.
 
-<a href="https://drive.google.com/uc?export=view&id=1IY_542N-YtTpziOEt0dQxnKqzeaKF0Kn">
-    <img alt="state-hook node configuration" src="https://drive.google.com/uc?export=view&id=1IY_542N-YtTpziOEt0dQxnKqzeaKF0Kn" height="350" >
+<a href="https://drive.google.com/uc?export=view&id=1tfQ91UZzRwfIiGNBmCaMmScuCokp54kI">
+    <img alt="set-global-state node configuration" src="https://drive.google.com/uc?export=view&id=1tfQ91UZzRwfIiGNBmCaMmScuCokp54kI" height="350" >
 </a>
