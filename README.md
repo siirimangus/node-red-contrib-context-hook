@@ -10,37 +10,37 @@ Instead of building complex flows with `switch` and other `function` nodes, the 
 that will centralize the decision-making logic into one node, therefore managing this will become easier and
 less error-prone.
 
-The general idea for the solution comes from the [React `useState` hook](https://react.dev/reference/react/useState).
-Let's imagine the automated devices setup is the frontend that is dependent on incoming signals. In order to render
-the frontend correctly, we would need to keep track of the signals. Meaning we need to have a node for each signal
-and connect them properly to achieve the desired output. The new solution allows to drop the connections and keep track
-of each signal in only one node. Whenever there is a change in the signal, the frontend will update itself accordingly.
-
+The approach is inspired by the [React `useState` hook](https://react.dev/reference/react/useState).
+Whenever there is a change in the state that is used in the function (`state-hook`), the function will run again.
+Compared to building Node-RED flows as usual, this approach allows better control over behaviours that have multiple inputs.
 
 ## Installation
 
-Either use the Manage Palette option in the Node-RED editor menu or run the following command in your Node-RED user directory
+Either use the Manage Palette option in the Node-RED menu or run the following command in your Node-RED user directory
 
-```npm i node-red-contrib-context-hook```
+```
+npm i node-red-contrib-context-hook
+```
 
 ## Usage
 
-The extension provides three nodes.
+The extension provides three nodes under the category "state".
 
 <a href="https://drive.google.com/uc?export=view&id=1hErIA_NaP0U0tf1NDE2GZp5TeNyf7AAg">
     <img alt="nodes in extension" src="https://drive.google.com/uc?export=view&id=1hErIA_NaP0U0tf1NDE2GZp5TeNyf7AAg" height="200" >
 </a>
 
 In order to use the `subscribe-state` and the `state-hook` nodes, the `set-state` node must be used beforehand.
-This is due to the nodes utilizing the Node.js event-driven architecture.
+The updates to the state (Node-RED global context) are only captured if the state is set by `set-state` node.
 
 ### 🔸 Node `set-state`
 
-This node is used to save values to the global context. After the value is saved, an event is emitted to the system
+This node is used to set values to the global context. After the value is set, an event is emitted to the system
 that the other nodes `subscribe-state` and `state-hook` can listen to.
 
 As an example, there is a simple flow to set kitchen temperature. The function in the `set-state` node extracts
-the temperature value from the message payload and saves it to the global context with the property name `kitchen.temperature`.
+the temperature value from the message payload and sets it to the global context with the property name `kitchen.temperature`.
+If the function returns `undefined`, the value is not updated and no event is emitted.
 
 <a href="https://drive.google.com/uc?export=view&id=1kiTcwM8m7Ets8sufPSw-71LDhtOIiig1">
     <img alt="set-state node flow" src="https://drive.google.com/uc?export=view&id=1kiTcwM8m7Ets8sufPSw-71LDhtOIiig1" height="70" >
@@ -50,7 +50,7 @@ the temperature value from the message payload and saves it to the global contex
     <img alt="set-state node editing" src="https://drive.google.com/uc?export=view&id=1W7FuzneEtijmuiVfi1aZ3X481BVTKcKw" height="270" >
 </a>
 
-And then the value can be checked in the global context.
+And then the value can be seen in the global context.
 
 <a href="https://drive.google.com/uc?export=view&id=1g0WhCTZ8Modc4J2x-n_rvPVByHCDEz0i">
     <img alt="value in the global context" src="https://drive.google.com/uc?export=view&id=1g0WhCTZ8Modc4J2x-n_rvPVByHCDEz0i" height="90" >
@@ -59,7 +59,7 @@ And then the value can be checked in the global context.
 ### 🔸 Node `subscribe-state`
 
 This is a node that is used for listening to changes in the global context that are saved by the `set-state` node.
-If there has been a change in the context value, the node will forward the information about the change in the following form:
+If there has been a change in the context value, the node will forward the information about the change in the following format:
 
 ```
 {
@@ -70,7 +70,7 @@ If there has been a change in the context value, the node will forward the infor
 }   
 ```
 
-As an example, let's listen to the kitchen temperature changes that was set in the previous `set-state` node example.
+As an example, let's listen to the kitchen temperature changes that were set in the previous `set-state` node example.
 First, add the `subscribe-state` node to the flow and configure it to listen to the property `kitchen.temperature`,
 and then debug the message that is sent after kitchen temperature change is saved to the global context.
 
@@ -88,21 +88,21 @@ and then debug the message that is sent after kitchen temperature change is save
     <img alt="subscribe-state node output" src="https://drive.google.com/uc?export=view&id=1tRGcw09WoRNpV5jPtDZQg834h9D4n4uV" height="170" >
 </a>
 
-### 🔸 Node `state-hook`
+### 🔸 Node `state-hook`. This is the node where the magic happens 🪄
 
-This is the node where `useGlobal` function can be utilized to watch changes in the global context that were saved
-via `set-state` node and based on the changes decide the output of the node. The `useGlobal` function takes two
-parameters: property name from the global context and the default value for this. The second parameter is optional and
-equals `null` by default. For example, to watch changes in the `kitchen.temperature` value, the `useGlobal` function
-should be used like this:
+Within the function in this node a hook called `useGlobal` is available.
+This hook can be utilized to watch changes in the global context that were saved via `set-state` node.
+The `useGlobal` function takes in two parameters: property name from the global context and the default value for it.
+The second parameter is optional and is `null` by default. For example, to watch changes in the `kitchen.temperature` value,
+the `useGlobal` function should be used like this:
 
 ```
 const temperature = useGlobal('kitchen.temperature');
 ```
 
-The `state-hook` node comes in handy when the logic for deciding the next state for an automated device depends on many
+The `state-hook` node comes in handy when the logic for deciding the next state for an output depends on many
 incoming signals. Instead of connecting the signals with `switch`, `function` etc. nodes, all the logic can be handled
-with the function written in the `state-hook` node.
+within the `state-hook` node.
 
 Let's take the following scenario and break it down into implementation steps: a light should turn on
 when there is movement in the room, and it is dark in the room. In all the other cases the lamp should turn off.
@@ -122,12 +122,15 @@ calculate the output for the light.
 <br />
 <br />
 <a href="https://drive.google.com/uc?export=view&id=1xznB-Fc9YuIs6HUpCDCCVSEnUZwDw_Gt">
-    <img alt="state-hook node configuration" src="https://drive.google.com/uc?export=view&id=1xznB-Fc9YuIs6HUpCDCCVSEnUZwDw_Gt" height="330" >
+    <img alt="state-hook node configuration" src="https://drive.google.com/uc?export=view&id=1xznB-Fc9YuIs6HUpCDCCVSEnUZwDw_Gt" height="350" >
 </a>
 
 Whenever there is a change in either `bathroom.illuminance` or `bathroom.occcupancy` value, the function for calculating
-the lamp state is called again. In order the function to work properly, the logic for setting the illuminance in the
-set-state node also has to be smart. Otherwise, it will happen that the lamp turns on because it's dark and
-movement, and then because of the lamp light there is enough light in the room so the lamp will turn off. Then it is dark
-again and the lamp will turn on etc. In order to take the illuminance correctly into account, setting the value
-for this also needs to implement some more logic than just transferring the data to the global context.
+the lamp state is run again.
+
+Most probably the illuminance might be affected by the light being turned on, therefore updating the state of the illuminance
+should take that into account.
+
+<a href="https://drive.google.com/uc?export=view&id=1IY_542N-YtTpziOEt0dQxnKqzeaKF0Kn">
+    <img alt="state-hook node configuration" src="https://drive.google.com/uc?export=view&id=1IY_542N-YtTpziOEt0dQxnKqzeaKF0Kn" height="350" >
+</a>
