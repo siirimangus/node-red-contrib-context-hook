@@ -1,10 +1,10 @@
 <script type="text/javascript">
-    RED.nodes.registerType('set-state', {
+    RED.nodes.registerType('set-global-state', {
         category: 'state',
         color: '#c0deed',
         align: 'right',
         defaults: {
-            name: { value: 'set state' },
+            name: { value: 'set global state' },
             property: { value: '' },
             func: { value: 'return msg.payload;' }
         },
@@ -27,7 +27,7 @@
                 return `${this.property} = ...`;
             }
 
-            return 'set state';
+            return 'set global state';
         },
         oneditprepare: function() {
             this.editor = RED.editor.createEditor({
@@ -60,7 +60,7 @@
     });
 </script>
 
-<script type="text/html" data-template-name="set-state">
+<script type="text/html" data-template-name="set-global-state">
     <div class="form-row" style="display: flex;">
         <label for="node-input-name"><i class="fa fa-tag"></i> Name</label>
         <input type="text" id="node-input-name" placeholder="name">
@@ -78,7 +78,7 @@
     </div>
 </script>
 
-<script type="text/html" data-help-name="set-state">
+<script type="text/html" data-help-name="set-global-state">
 	<p>A node that assigns the message payload to the state property</p>
 	<div class="form-tips"><b>Tip:</b> The property name can be overridden by setting `msg.property` value.</div>
 	<div class="form-tips"><b>Tip:</b> Use dots to group state, i.e `kitchen.temperature`.</div>

@@ -61,7 +61,7 @@
   },
   {
     "id": "0ccc5a6cc0ae6b3a",
-    "type": "set-state",
+    "type": "set-global-state",
     "z": "f5b0c7eb588ff79f",
     "name": "set state",
     "property": "kitchen.temperature",

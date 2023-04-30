@@ -2,7 +2,7 @@ const { isEqual } = require('lodash');
 const { getEmitter } = require('../../events/emitter');
 
 module.exports = function(RED) {
-    function SetState(config) {
+    function SetGlobalState(config) {
         RED.nodes.createNode(this, config);
         const node = this;
 
@@ -56,5 +56,5 @@ module.exports = function(RED) {
         });
     }
 
-    RED.nodes.registerType('set-state', SetState);
+    RED.nodes.registerType('set-global-state', SetGlobalState);
 }

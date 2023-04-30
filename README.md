@@ -30,24 +30,24 @@ The extension provides three nodes under the category "state".
     <img alt="nodes in extension" src="https://drive.google.com/uc?export=view&id=1hErIA_NaP0U0tf1NDE2GZp5TeNyf7AAg" height="200" >
 </a>
 
-In order to use the `subscribe-state` and the `state-hook` nodes, the `set-state` node must be used beforehand.
-The updates to the state (Node-RED global context) are only captured if the state is set by `set-state` node.
+In order to use the `subscribe-state` and the `state-hook` nodes, the `set-global-state` node must be used beforehand.
+The updates to the state (Node-RED global context) are only captured if the state is set by `set-global-state` node.
 
-### 🔸 Node `set-state`
+### 🔸 Node `set-global-state`
 
 This node is used to set values to the global context. After the value is set, an event is emitted to the system
 that the other nodes `subscribe-state` and `state-hook` can listen to.
 
-As an example, there is a simple flow to set kitchen temperature. The function in the `set-state` node extracts
+As an example, there is a simple flow to set kitchen temperature. The function in the `set-global-state` node extracts
 the temperature value from the message payload and sets it to the global context with the property name `kitchen.temperature`.
 If the function returns `undefined`, the value is not updated and no event is emitted.
 
 <a href="https://drive.google.com/uc?export=view&id=1kiTcwM8m7Ets8sufPSw-71LDhtOIiig1">
-    <img alt="set-state node flow" src="https://drive.google.com/uc?export=view&id=1kiTcwM8m7Ets8sufPSw-71LDhtOIiig1" height="70" >
+    <img alt="set-global-state node flow" src="https://drive.google.com/uc?export=view&id=1kiTcwM8m7Ets8sufPSw-71LDhtOIiig1" height="70" >
 </a>
 <br/>
 <a href="https://drive.google.com/uc?export=view&id=1W7FuzneEtijmuiVfi1aZ3X481BVTKcKw">
-    <img alt="set-state node editing" src="https://drive.google.com/uc?export=view&id=1W7FuzneEtijmuiVfi1aZ3X481BVTKcKw" height="270" >
+    <img alt="set-global-state node editing" src="https://drive.google.com/uc?export=view&id=1W7FuzneEtijmuiVfi1aZ3X481BVTKcKw" height="270" >
 </a>
 
 And then the value can be seen in the global context.
@@ -58,7 +58,7 @@ And then the value can be seen in the global context.
 
 ### 🔸 Node `subscribe-state`
 
-This is a node that is used for listening to changes in the global context that are saved by the `set-state` node.
+This is a node that is used for listening to changes in the global context that are saved by the `set-global-state` node.
 If there has been a change in the context value, the node will forward the information about the change in the following format:
 
 ```
@@ -70,7 +70,7 @@ If there has been a change in the context value, the node will forward the infor
 }   
 ```
 
-As an example, let's listen to the kitchen temperature changes that were set in the previous `set-state` node example.
+As an example, let's listen to the kitchen temperature changes that were set in the previous `set-global-state` node example.
 First, add the `subscribe-state` node to the flow and configure it to listen to the property `kitchen.temperature`,
 and then debug the message that is sent after kitchen temperature change is saved to the global context.
 
@@ -91,7 +91,7 @@ and then debug the message that is sent after kitchen temperature change is save
 ### 🔸 Node `state-hook`. This is the node where the magic happens 🪄
 
 Within the function in this node a hook called `useGlobal` is available.
-This hook can be utilized to watch changes in the global context that were saved via `set-state` node.
+This hook can be utilized to watch changes in the global context that were saved via `set-global-state` node.
 The `useGlobal` function takes in two parameters: property name from the global context and the default value for it.
 The second parameter is optional and is `null` by default. For example, to watch changes in the `kitchen.temperature` value,
 the `useGlobal` function should be used like this:
@@ -107,10 +107,10 @@ within the `state-hook` node.
 Let's take the following scenario and break it down into implementation steps: a light should turn on
 when there is movement in the room, and it is dark in the room. In all the other cases the lamp should turn off.
 
-1) Save the brightness and movement data to the global state via `set-state` nodes.
+1) Save the brightness and movement data to the global state via `set-global-state` nodes.
 
 <a href="https://drive.google.com/uc?export=view&id=1hamfk2DbD-8rY-0ZT0CabG6ws8036HUV">
-    <img alt="set-state nodes" src="https://drive.google.com/uc?export=view&id=1hamfk2DbD-8rY-0ZT0CabG6ws8036HUV" height="90" >
+    <img alt="set-global-state nodes" src="https://drive.google.com/uc?export=view&id=1hamfk2DbD-8rY-0ZT0CabG6ws8036HUV" height="90" >
 </a>
 
 2) Use the `state-hook` node to listen to changes in the global context with the `useGlobal` function and

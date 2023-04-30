@@ -4,10 +4,10 @@
   "description": "Nodes for managing state in Node-RED platform",
   "keywords": ["node-red", "node-red-contrib", "state"],
   "homepage": "https://github.com/siirimangus/node-red-contrib-context-hook#readme",
-  "main": "set-state.js",
+  "main": "state-hook.js",
   "node-red": {
     "nodes": {
-      "set-state": "nodes/set-state/set-state.js",
+      "set-global-state": "nodes/set-global-state/set-global-state.js",
       "subscribe-state": "nodes/subscribe-state/subscribe-state.js",
       "state-hook": "nodes/state-hook/state-hook.js"
     }
