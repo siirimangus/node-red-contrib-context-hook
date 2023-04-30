@@ -2,7 +2,8 @@
   "name": "@mangus/node-red-contrib-context-hook",
   "version": "1.0.0",
   "description": "Nodes for managing state in Node-RED platform",
-  "keywords": ["node-red", "state"],
+  "keywords": ["node-red", "node-red-contrib", "state"],
+  "homepage": "https://github.com/siirimangus/node-red-contrib-context-hook#readme",
   "main": "set-state.js",
   "node-red": {
     "nodes": {
